@@ -1,4 +1,4 @@
-<plugin id="com.deposco.pos.starprinter" version="0.0.1" xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="com.deposco.pos" version="0.0.1" xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Star Printer</name>
     <description>Star printer plugn with PhoneGap apps</description>
     <author email="jlee@deposco.com" href="http://deposco.com">Deposco</author>
