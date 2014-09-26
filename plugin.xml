@@ -10,6 +10,10 @@
         <engine name="cordova" version=">3.0.0" />
     </engines>
 
+    <js-module src="www/js/starPrinter.js" name="StarPrinter">
+        <clobbers target="window.starPrinter" />
+    </js-module>
+
     <platform name="android">    
         <config-file target="config.xml" parent="/*">
             <feature name="StarPrinter">
@@ -17,10 +21,6 @@
             </feature>
         </config-file>
         
-        <js-module src="www/js/starPrinter.js" name="StarPrinter">
-            <clobbers target="window.starPrinter" />
-        </js-module>
-
         <source-file src="src/android/com/deposco/pos/StarPrinter.java" target-dir="src/com/deposco/pos" />
     </platform>
 </plugin>
