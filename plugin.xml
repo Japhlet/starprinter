@@ -1,0 +1,27 @@
+<plugin id="com.deposco.pos.starprinter" version="0.0.1" xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Star Printer</name>
+    <description>Star printer plugn with PhoneGap apps</description>
+    <author email="jlee@deposco.com" href="http://deposco.com">Deposco</author>
+    <license>Apache 2.0</license>
+    
+    <keywords>Star Printer, printer</keywords>
+
+    <engines>
+        <engine name="cordova" version=">3.0.0" />
+    </engines>
+
+    <platform name="android">    
+        <config-file target="config.xml" parent="/*">
+            <feature name="StarPrinter">
+                <param name="android-package" value="com.deposco.pos.StarPrinter" />
+            </feature>
+        </config-file>
+        
+        <js-module src="www/js/starPrinter.js" name="StarPrinter">
+            <clobbers target="window.starPrinter" />
+        </js-module>
+
+        <source-file src="src/android/com/deposco/pos/StarPrinter.java" target-dir="src/com/deposco/pos" />
+    </platform>
+</plugin>
+
