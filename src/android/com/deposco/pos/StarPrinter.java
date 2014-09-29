@@ -52,91 +52,104 @@ public class StarPrinter extends CordovaPlugin {
      * @param portName - Port name to use for communication. This should be (TCP:<IPAddress>)
      * @param portSettings - Should be blank
      */
-    public static void openCashDrawer(Context context, String portName, String portSettings)
-    {
-        ArrayList<Byte> commands = new ArrayList<Byte>();
-        byte openCashDrawer = 0x07;
+    public void openCashDrawer(final Context context, final String portName, final String portSettings) {
+        final CordovaInterface cordova = this.cordova;
 
-        commands.add(openCashDrawer);
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ArrayList<Byte> commands = new ArrayList<Byte>();
+                byte openCashDrawer = 0x07;
 
-        sendCommand(context, portName, portSettings, commands);
+                commands.add(openCashDrawer);
+
+                sendCommand(context, portName, portSettings, commands);
+            }
+        };
+        this.cordova.getActivity().runOnUiThread(runnable);
     }
 
-    private static void printReceipt(Context context, String portName, String portSettings) {
-        ArrayList<Byte> list = new ArrayList<Byte>();
-        Byte[] tempList;
+    private void printReceipt(final Context context, final String portName, final String portSettings) {
+        final CordovaInterface cordova = this.cordova;
 
-        int printableArea = 576;    // Printable area in paper is 832(dot)
+        Runnable runnable = new Runnable() {
+            public void run() {
+                ArrayList<Byte> list = new ArrayList<Byte>();
+                Byte[] tempList;
 
-        RasterDocument rasterDoc = new RasterDocument(RasterDocument.RasSpeed.Medium, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasTopMargin.Standard, 0, 0, 0);
-        byte[] command = rasterDoc.BeginDocumentCommandData();
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
+                int printableArea = 576;    // Printable area in paper is 832(dot)
+
+                RasterDocument rasterDoc = new RasterDocument(RasterDocument.RasSpeed.Medium, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasTopMargin.Standard, 0, 0, 0);
+                byte[] command = rasterDoc.BeginDocumentCommandData();
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
 
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        DateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                Date date = new Date();
+                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                DateFormat timeFormat = new SimpleDateFormat("hh:mm a");
 
-        String dateStr = dateFormat.format(date);
-        String timeStr = timeFormat.format(date);
+                String dateStr = dateFormat.format(date);
+                String timeStr = timeFormat.format(date);
 
-        String textToPrint = ("                       Designer Eyes\r\n" +
-                "                             708 Lincoln Road\r\n" +
-                "                           Miami Beach, FL 33139\r\n\r\n" +
-                "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
-                "-----------------------------------------------------------------------\r");
-        command = createRasterCommand(textToPrint, printableArea, 13, 0);
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
+                String textToPrint = ("                       Designer Eyes\r\n" +
+                        "                             708 Lincoln Road\r\n" +
+                        "                           Miami Beach, FL 33139\r\n\r\n" +
+                        "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
+                        "-----------------------------------------------------------------------\r");
+                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
-        textToPrint = ("SALE");
-        command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
+                textToPrint = ("SALE");
+                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
-        textToPrint = ("SKU \t\t\t                 Description \t\t                Total\r\n" +
-                "300678566 \t\t\t      DEVIATION - POLBKIRI - 4061-13		\t\t    10.99\n" +
-                "300692003 \t\t\t      TWENTYSIX.2 - BLUBKIRI - 9177-16		\t\t    29.99\n" +
-                "300651148 \t\t\t      GG1045 - 53BLACK - 0ACZ 		\t\t       29.99\n" +
-                "300642980 \t\t\t      YARDDOG II - 55POLFLI - 355		\t       49.99\n" +
-                "300638471 \t\t\t      EA2004 - GUNMT - 302487		\t\t       35.99\n\n" +
-                "Subtotal\t\t\t\t                                              156.95\r\n" +
-                "Tax		\t\t\t\t                                                     0.00\r\n" +
-                "-----------------------------------------------------------------------\r\n" +
-                "Total   \t                                                   $156.95\r\n" +
-                "-----------------------------------------------------------------------\r\n\r\n" +
-                "Charge\r\n159.95\r\n" +
-                "Visa XXXX-XXXX-XXXX-0123\r\n");
+                textToPrint = ("SKU \t\t\t                 Description \t\t                Total\r\n" +
+                        "300678566 \t\t\t      DEVIATION - POLBKIRI - 4061-13		\t\t    10.99\n" +
+                        "300692003 \t\t\t      TWENTYSIX.2 - BLUBKIRI - 9177-16		\t\t    29.99\n" +
+                        "300651148 \t\t\t      GG1045 - 53BLACK - 0ACZ 		\t\t       29.99\n" +
+                        "300642980 \t\t\t      YARDDOG II - 55POLFLI - 355		\t       49.99\n" +
+                        "300638471 \t\t\t      EA2004 - GUNMT - 302487		\t\t       35.99\n\n" +
+                        "Subtotal\t\t\t\t                                              156.95\r\n" +
+                        "Tax		\t\t\t\t                                                     0.00\r\n" +
+                        "-----------------------------------------------------------------------\r\n" +
+                        "Total   \t                                                   $156.95\r\n" +
+                        "-----------------------------------------------------------------------\r\n\r\n" +
+                        "Charge\r\n159.95\r\n" +
+                        "Visa XXXX-XXXX-XXXX-0123\r\n");
 
-        command = createRasterCommand(textToPrint, printableArea, 13, 0);
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
+                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
-        textToPrint = ("Refunds and Exchanges");
-        command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
+                textToPrint = ("Refunds and Exchanges");
+                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
-        textToPrint = ("Within 30 days with receipt\r\n" +
-                "And tags attached");
-        command = createRasterCommand(textToPrint, printableArea, 13, 0);
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
+                textToPrint = ("Within 30 days with receipt\r\n" +
+                        "And tags attached");
+                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
-        command = rasterDoc.EndDocumentCommandData();
-        tempList = new Byte[command.length];
-        CopyArray(command, tempList);
-        list.addAll(Arrays.asList(tempList));
-        list.addAll(Arrays.asList(new Byte[]{0x07}));                // Kick cash drawer
+                command = rasterDoc.EndDocumentCommandData();
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
+                list.addAll(Arrays.asList(new Byte[]{0x07}));                // Kick cash drawer
 
-        sendCommand(context, portName, portSettings, list);
+                sendCommand(context, portName, portSettings, list);
+            }
+        };
+        this.cordova.getActivity().runOnUiThread(runnable);
     }
 
     private static byte[] createRasterCommand(String printText, int printableArea, int textSize, int bold) {

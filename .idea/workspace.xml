@@ -66,18 +66,22 @@
       <file leaf-file-name="StarPrinter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48501578" vertical-offset="0" max-vertical-offset="4710">
-              <caret line="41" column="21" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.7570978" vertical-offset="0" max-vertical-offset="4905">
+              <caret line="64" column="28" selection-start-line="64" selection-start-column="28" selection-end-line="64" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2212#2218#0" expanded="true" />
-                <element signature="e#2507#2513#0" expanded="true" />
-                <element signature="e#11317#12666#0" expanded="true" />
-                <element signature="e#11691#12028#0" expanded="true" />
-                <element signature="e#12001#12002#0" expanded="true" />
-                <element signature="e#12071#12379#0" expanded="true" />
-                <element signature="e#12360#12361#0" expanded="true" />
-                <element signature="e#12654#12655#0" expanded="true" />
+                <element signature="e#2255#2557#0" expanded="true" />
+                <element signature="e#2360#2366#0" expanded="true" />
+                <element signature="e#2546#2547#0" expanded="true" />
+                <element signature="e#2815#7276#0" expanded="true" />
+                <element signature="e#2916#2922#0" expanded="true" />
+                <element signature="e#7265#7266#0" expanded="true" />
+                <element signature="e#12291#13640#0" expanded="true" />
+                <element signature="e#12665#13002#0" expanded="true" />
+                <element signature="e#12975#12976#0" expanded="true" />
+                <element signature="e#13045#13353#0" expanded="true" />
+                <element signature="e#13334#13335#0" expanded="true" />
+                <element signature="e#13628#13629#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -472,12 +476,12 @@
       <created>1412004949255</created>
       <updated>1412004949255</updated>
       <workItem from="1412004955082" duration="79000" />
-      <workItem from="1412005082698" duration="7714000" />
+      <workItem from="1412005082698" duration="8250000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7793000" />
+    <option name="totallyTimeSpent" value="8329000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2560" y="22" width="2560" height="1414" extended-state="6" />
@@ -536,14 +540,18 @@
           <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2212#2218#0" expanded="true" />
-            <element signature="e#2507#2513#0" expanded="true" />
-            <element signature="e#11317#12666#0" expanded="true" />
-            <element signature="e#11691#12028#0" expanded="true" />
-            <element signature="e#12001#12002#0" expanded="true" />
-            <element signature="e#12071#12379#0" expanded="true" />
-            <element signature="e#12360#12361#0" expanded="true" />
-            <element signature="e#12654#12655#0" expanded="true" />
+            <element signature="e#2255#2557#0" expanded="true" />
+            <element signature="e#2360#2366#0" expanded="true" />
+            <element signature="e#2546#2547#0" expanded="true" />
+            <element signature="e#2815#7276#0" expanded="true" />
+            <element signature="e#2916#2922#0" expanded="true" />
+            <element signature="e#7265#7266#0" expanded="true" />
+            <element signature="e#12291#13640#0" expanded="true" />
+            <element signature="e#12665#13002#0" expanded="true" />
+            <element signature="e#12975#12976#0" expanded="true" />
+            <element signature="e#13045#13353#0" expanded="true" />
+            <element signature="e#13334#13335#0" expanded="true" />
+            <element signature="e#13628#13629#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -592,18 +600,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48501578" vertical-offset="0" max-vertical-offset="4710">
-          <caret line="41" column="21" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.7570978" vertical-offset="0" max-vertical-offset="4905">
+          <caret line="64" column="28" selection-start-line="64" selection-start-column="28" selection-end-line="64" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2212#2218#0" expanded="true" />
-            <element signature="e#2507#2513#0" expanded="true" />
-            <element signature="e#11317#12666#0" expanded="true" />
-            <element signature="e#11691#12028#0" expanded="true" />
-            <element signature="e#12001#12002#0" expanded="true" />
-            <element signature="e#12071#12379#0" expanded="true" />
-            <element signature="e#12360#12361#0" expanded="true" />
-            <element signature="e#12654#12655#0" expanded="true" />
+            <element signature="e#2255#2557#0" expanded="true" />
+            <element signature="e#2360#2366#0" expanded="true" />
+            <element signature="e#2546#2547#0" expanded="true" />
+            <element signature="e#2815#7276#0" expanded="true" />
+            <element signature="e#2916#2922#0" expanded="true" />
+            <element signature="e#7265#7266#0" expanded="true" />
+            <element signature="e#12291#13640#0" expanded="true" />
+            <element signature="e#12665#13002#0" expanded="true" />
+            <element signature="e#12975#12976#0" expanded="true" />
+            <element signature="e#13045#13353#0" expanded="true" />
+            <element signature="e#13334#13335#0" expanded="true" />
+            <element signature="e#13628#13629#0" expanded="true" />
           </folding>
         </state>
       </provider>
