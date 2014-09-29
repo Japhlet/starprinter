@@ -8,7 +8,9 @@ import android.graphics.*;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.widget.EditText;
 import android.widget.TextView;
+import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.stario.StarPrinterStatus;
@@ -27,6 +29,8 @@ import java.util.List;
  * Created by jaylee on 9/26/14.
  */
 public class StarPrinter extends CordovaPlugin {
+
+    private static final String TAG = "StarPrinter";
     public StarPrinter() {}
 
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -38,7 +42,7 @@ public class StarPrinter extends CordovaPlugin {
     	 */
         if(this.cordova.getActivity().isFinishing()) return true;
 
-        LOG.d("StarPrinter", "ActionName = " + action);
+        LOG.d(TAG, "ActionName = " + action);
         Context context=this.cordova.getActivity().getApplicationContext();
 
         List<SalesItem> salesItems = new ArrayList<SalesItem>();
@@ -49,9 +53,90 @@ public class StarPrinter extends CordovaPlugin {
         salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",32900.99, 3290.0));
         salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",12.99,0));
 
-        printReceipt(context, cordova.getActivity().getResources(), "TCP:10.1.1.107", "", salesItems);
+        String url = "TCP:10.1.1.107";
+        if("print".equals(action)) {
+            printReceipt(context, cordova.getActivity().getResources(), url, "", salesItems);
+        }
+        else if("openCashDrawer".equals(action)) {
+            openCashDrawer(context, url,"");
+        }
+        else if("searchTCPPrinters".equals(action)) {
+            searchPrinter(context, "TCP");
+        }
+        else if("searchBTPrinters".equals(action)) {
+            searchPrinter(context, "BT");
+        }
         //this.alert(args.getString(0), args.getString(1), args.getString(2), callbackContext);
-         return true;
+        return true;
+    }
+
+    private void searchPrinter(final Context context, final String protocol) {
+
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                List<PortInfo> tcpPortList = null;
+                try {
+                    tcpPortList = StarIOPort.searchPrinter(protocol+":");
+                }
+                catch (StarIOPortException e) {
+                    LOG.e(TAG,e.getMessage(), e);
+                }
+
+                if(tcpPortList != null && !tcpPortList.isEmpty()) {
+                    List<PortInfo> discoveredPorts = new ArrayList<PortInfo>();
+                    for (PortInfo portInfo : tcpPortList) {
+                        //Exclude SAC10 model ( no idea why ... )
+                        if(!portInfo.getModelName().startsWith("SAC")) {
+                            discoveredPorts.add(portInfo);
+                        }
+                    }
+
+                    List<String> arrayPortName = new ArrayList<String>();
+
+                    for(PortInfo portInfo : discoveredPorts)
+                    {
+                        String portName;
+
+                        portName = portInfo.getPortName();
+
+                        if(!portInfo.getMacAddress().equals(""))
+                        {
+                            portName += "\n - " + portInfo.getMacAddress();
+                            if(!portInfo.getModelName().equals(""))
+                            {
+                                portName += "\n - " + portInfo.getModelName();
+                            }
+                        }
+
+                        arrayPortName.add(portName);
+
+                    }
+
+                    EditText editPortName = new EditText(context);
+
+                    new AlertDialog.Builder(context)
+                            .setIcon(android.R.drawable.checkbox_on_background)
+                            .setTitle("Please Select IP Address or Input Port Name")
+                            .setCancelable(false)
+                            .setView(editPortName)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int button) {
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int button){
+                                }
+                            })
+                            .setItems(arrayPortName.toArray(new String[0]), new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int select){
+                                }
+                            })
+                            .show();
+                }            }
+        });
     }
 
     /**
@@ -98,17 +183,17 @@ public class StarPrinter extends CordovaPlugin {
                 String timeStr = timeFormat.format(date);
 
                 Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.des_logo);
-                StarBitmap starbitmap = new StarBitmap(bm, false, 500);
-                command = starbitmap.getImageRasterDataForPrinting(true);
+                StarBitmap starbitmap = new StarBitmap(bm, true, 576);
+                command = starbitmap.getImageRasterDataForPrinting(false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                String textToPrint = "                          Designer Eyes\r\n" +
-                        "                          708 Lincoln Road\r\n" +
-                        "                        Miami Beach, FL 33139\r\n\r\n" +
-                        "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
-                        "-----------------------------------------------------------------------\r";
+                String textToPrint =
+                        "                           708 Lincoln Road\r\n" +
+                                "                       Miami Beach, FL 33139\r\n\r\n" +
+                                "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
+                                "-----------------------------------------------------------------------\r";
                 command = createRasterCommand(textToPrint, printableArea, 13, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
@@ -121,7 +206,7 @@ public class StarPrinter extends CordovaPlugin {
                 list.addAll(Arrays.asList(tempList));
 
 
-                textToPrint = "SKU \t\t\t                 Description \t\t                Total\r\n";
+                textToPrint = "SKU \t\t                 Description \t\t                Total\r\n";
 
                 command = createRasterCommand(textToPrint, printableArea, 13, 0);
                 tempList = new Byte[command.length];
@@ -147,12 +232,12 @@ public class StarPrinter extends CordovaPlugin {
 
                 textToPrint =
                         "Subtotal\t\t\t\t                                            "+subTotal+"\r\n" +
-                        "Tax	\t\t\t\t                                                "+tax+"\r\n" +
-                        "-----------------------------------------------------------------------\r\n" +
-                        "Total  \t\t\t\t                                              $"+total+"\r\n" +
-                        "-----------------------------------------------------------------------\r\n\r\n" +
-                        "Charge\r\n"+total+"\r\n" +
-                        "Visa XXXX-XXXX-XXXX-0123\r\n";
+                                "Tax	\t\t\t\t                                                "+tax+"\r\n" +
+                                "-----------------------------------------------------------------------\r\n" +
+                                "Total  \t\t\t\t                                              $"+total+"\r\n" +
+                                "-----------------------------------------------------------------------\r\n\r\n" +
+                                "Charge\r\n"+total+"\r\n" +
+                                "Visa XXXX-XXXX-XXXX-0123\r\n";
 
                 command = createRasterCommand(textToPrint, printableArea, 12, 0);
                 tempList = new Byte[command.length];
@@ -194,7 +279,8 @@ public class StarPrinter extends CordovaPlugin {
 
         try {
             typeface = Typeface.create(Typeface.SERIF, bold);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             typeface = Typeface.create(Typeface.DEFAULT, bold);
         }
 
@@ -340,8 +426,7 @@ public class StarPrinter extends CordovaPlugin {
         }
     }
 
-    private static byte[] convertFromListByteArrayTobyteArray(List<Byte> ByteArray)
-    {
+    private static byte[] convertFromListByteArrayTobyteArray(List<Byte> ByteArray) {
         byte[] byteArray = new byte[ByteArray.size()];
         for(int index = 0; index < byteArray.length; index++)
         {
