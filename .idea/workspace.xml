@@ -63,13 +63,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="StarPrinter.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="StarPrinter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.2421136" vertical-offset="0" max-vertical-offset="4710">
-              <caret line="105" column="62" selection-start-line="105" selection-start-column="62" selection-end-line="105" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4710">
+              <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#2214#2220#0" expanded="true" />
                 <element signature="e#2509#2515#0" expanded="true" />
                 <element signature="e#11319#12668#0" expanded="true" />
@@ -79,6 +78,16 @@
                 <element signature="e#12362#12363#0" expanded="true" />
                 <element signature="e#12656#12657#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plugin.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/plugin.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.29574132" vertical-offset="0" max-vertical-offset="1268">
+              <caret line="25" column="77" selection-start-line="25" selection-start-column="77" selection-end-line="25" selection-end-column="77" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -138,6 +147,7 @@
         <option value="$PROJECT_DIR$/src/android/com/deposco/pos/RasterDocument.java" />
         <option value="$PROJECT_DIR$/src/android/com/deposco/pos/StarBitmap.java" />
         <option value="$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java" />
+        <option value="$PROJECT_DIR$/plugin.xml" />
       </list>
     </option>
   </component>
@@ -461,12 +471,12 @@
       <created>1412004949255</created>
       <updated>1412004949255</updated>
       <workItem from="1412004955082" duration="79000" />
-      <workItem from="1412005082698" duration="7392000" />
+      <workItem from="1412005082698" duration="7556000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7471000" />
+    <option name="totallyTimeSpent" value="7635000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2560" y="22" width="2560" height="1414" extended-state="6" />
@@ -524,7 +534,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="1140">
           <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2214#2220#0" expanded="true" />
             <element signature="e#2509#2515#0" expanded="true" />
             <element signature="e#11319#12668#0" expanded="true" />
@@ -573,10 +582,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2421136" vertical-offset="0" max-vertical-offset="4710">
-          <caret line="105" column="62" selection-start-line="105" selection-start-column="62" selection-end-line="105" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4710">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2214#2220#0" expanded="true" />
             <element signature="e#2509#2515#0" expanded="true" />
             <element signature="e#11319#12668#0" expanded="true" />
@@ -586,6 +594,14 @@
             <element signature="e#12362#12363#0" expanded="true" />
             <element signature="e#12656#12657#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugin.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29574132" vertical-offset="0" max-vertical-offset="1268">
+          <caret line="25" column="77" selection-start-line="25" selection-start-column="77" selection-end-line="25" selection-end-column="77" />
+          <folding />
         </state>
       </provider>
     </entry>
