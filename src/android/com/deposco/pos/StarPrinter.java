@@ -131,6 +131,7 @@ public class StarPrinter extends CordovaPlugin {
                 sb.append("\n");
                 double total = subTotal + tax;
 
+                textToPrint = sb.toString();
                 command = createRasterCommand(textToPrint, printableArea, 12, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
