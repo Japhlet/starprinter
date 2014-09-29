@@ -3,6 +3,7 @@ package com.deposco.pos;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -48,7 +49,7 @@ public class StarPrinter extends CordovaPlugin {
         salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",32900.99, 3290.0));
         salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",12.99,0));
 
-        printReceipt(context, "TCP:10.1.1.107", "", salesItems);
+        printReceipt(context, cordova.getActivity().getResources(), "TCP:10.1.1.107", "", salesItems);
         //this.alert(args.getString(0), args.getString(1), args.getString(2), callbackContext);
          return true;
     }
@@ -74,7 +75,7 @@ public class StarPrinter extends CordovaPlugin {
         });
     }
 
-    private void printReceipt(final Context context, final String portName, final String portSettings, final List<SalesItem> salesItems) {
+    private void printReceipt(final Context context, final Resources res,final String portName, final String portSettings, final List<SalesItem> salesItems) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> list = new ArrayList<Byte>();
