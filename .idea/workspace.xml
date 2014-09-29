@@ -66,14 +66,15 @@
       <file leaf-file-name="StarPrinter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.5970031" vertical-offset="30" max-vertical-offset="7305">
-              <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.46135646" vertical-offset="390" max-vertical-offset="7305">
+              <caret line="65" column="33" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1604#1615#0" expanded="true" />
                 <element signature="e#2835#5676#0" expanded="true" />
                 <element signature="e#3300#3310#0" expanded="true" />
                 <element signature="e#3683#3691#0" expanded="true" />
+                <element signature="e#5665#5666#0" expanded="true" />
                 <element signature="e#6322#6624#0" expanded="true" />
                 <element signature="e#6427#6433#0" expanded="true" />
                 <element signature="e#6613#6614#0" expanded="true" />
@@ -222,70 +223,6 @@
     <panes>
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="starprinter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Android API 19 Platform &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="starprinter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Android API 19 Platform &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android.jar" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="starprinter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Android API 19 Platform &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android.jar" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="starprinter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="starprinter" />
@@ -507,12 +444,12 @@
       <created>1412004949255</created>
       <updated>1412004949255</updated>
       <workItem from="1412004955082" duration="79000" />
-      <workItem from="1412005082698" duration="14917000" />
+      <workItem from="1412005082698" duration="15315000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14996000" />
+    <option name="totallyTimeSpent" value="15394000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2560" y="22" width="2560" height="1414" extended-state="6" />
@@ -575,6 +512,7 @@
             <element signature="e#2835#5676#0" expanded="true" />
             <element signature="e#3300#3310#0" expanded="true" />
             <element signature="e#3683#3691#0" expanded="true" />
+            <element signature="e#5665#5666#0" expanded="true" />
             <element signature="e#6322#6624#0" expanded="true" />
             <element signature="e#6427#6433#0" expanded="true" />
             <element signature="e#6613#6614#0" expanded="true" />
@@ -659,14 +597,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5970031" vertical-offset="30" max-vertical-offset="7305">
-          <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.46135646" vertical-offset="390" max-vertical-offset="7305">
+          <caret line="65" column="33" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1604#1615#0" expanded="true" />
             <element signature="e#2835#5676#0" expanded="true" />
             <element signature="e#3300#3310#0" expanded="true" />
             <element signature="e#3683#3691#0" expanded="true" />
+            <element signature="e#5665#5666#0" expanded="true" />
             <element signature="e#6322#6624#0" expanded="true" />
             <element signature="e#6427#6433#0" expanded="true" />
             <element signature="e#6613#6614#0" expanded="true" />
