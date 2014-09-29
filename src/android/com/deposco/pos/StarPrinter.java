@@ -8,7 +8,6 @@ import android.graphics.*;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.widget.EditText;
 import android.widget.TextView;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
@@ -60,17 +59,20 @@ public class StarPrinter extends CordovaPlugin {
         else if("openCashDrawer".equals(action)) {
             openCashDrawer(context, url,"");
         }
+/*
         else if("searchTCPPrinters".equals(action)) {
-            searchPrinter(context, "TCP");
+            searchPrinter(context, "TCP", callbackContext);
         }
         else if("searchBTPrinters".equals(action)) {
-            searchPrinter(context, "BT");
+            searchPrinter(context, "BT", callbackContext);
         }
+*/
         //this.alert(args.getString(0), args.getString(1), args.getString(2), callbackContext);
         return true;
     }
 
-    private void searchPrinter(final Context context, final String protocol) {
+    private void searchPrinter(final Context context, final String protocol, final CallbackContext callbackContext) {
+
 
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
@@ -78,8 +80,9 @@ public class StarPrinter extends CordovaPlugin {
                 try {
                     tcpPortList = StarIOPort.searchPrinter(protocol+":");
                 }
-                catch (StarIOPortException e) {
+                catch (Throwable e) {
                     LOG.e(TAG,e.getMessage(), e);
+                    return;
                 }
 
                 if(tcpPortList != null && !tcpPortList.isEmpty()) {
@@ -112,30 +115,35 @@ public class StarPrinter extends CordovaPlugin {
 
                     }
 
-                    EditText editPortName = new EditText(context);
+                    for (String portName : arrayPortName) {
+                        LOG.d(TAG,"PortName = " + portName);
+                    }
+                    /**
+                     EditText editPortName = new EditText(cordova.getActivity());
 
-                    new AlertDialog.Builder(context)
-                            .setIcon(android.R.drawable.checkbox_on_background)
-                            .setTitle("Please Select IP Address or Input Port Name")
-                            .setCancelable(false)
-                            .setView(editPortName)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener()
-                            {
-                                public void onClick(DialogInterface dialog, int button) {
-                                }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                            {
-                                public void onClick(DialogInterface dialog, int button){
-                                }
-                            })
-                            .setItems(arrayPortName.toArray(new String[0]), new DialogInterface.OnClickListener()
-                            {
-                                public void onClick(DialogInterface dialog, int select){
-                                }
-                            })
-                            .show();
-                }            }
+                     new AlertDialog.Builder(cordova.getActivity())
+                     .setTitle("Please Select IP Address or Input Port Name")
+                     .setCancelable(false)
+                     .setView(editPortName)
+                     .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                     {
+                     public void onClick(DialogInterface dialog, int button) {
+                     }
+                     })
+                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                     {
+                     public void onClick(DialogInterface dialog, int button){
+                     }
+                     })
+                     .setItems(arrayPortName.toArray(new String[0]), new DialogInterface.OnClickListener()
+                     {
+                     public void onClick(DialogInterface dialog, int select){
+                     }
+                     })
+                     .show();
+                     */
+                }
+            }
         });
     }
 
@@ -473,7 +481,7 @@ public class StarPrinter extends CordovaPlugin {
                 AlertDialog dialog =  dlg.show();
                 TextView messageview = (TextView)dialog.findViewById(android.R.id.message);
                 messageview.setTextDirection(android.view.View.TEXT_DIRECTION_LOCALE);
-            };
+            }
         };
         this.cordova.getActivity().runOnUiThread(runnable);
     }
