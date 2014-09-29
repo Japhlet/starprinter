@@ -39,7 +39,16 @@ public class StarPrinter extends CordovaPlugin {
 
         LOG.d("StarPrinter", "ActionName = " + action);
         Context context=this.cordova.getActivity().getApplicationContext();
-        printReceipt(context, "TCP:10.1.1.107", "");
+
+        List<SalesItem> salesItems = new ArrayList<SalesItem>();
+
+        salesItems.add(new SalesItem("300678566","DEVIATION - POLBKIRI - 4061-13",123.99, 12.3));
+        salesItems.add(new SalesItem("300692003","TWENTYSIX.2 - BLUBKIRI - 9177-16",219.99, 21.9));
+        salesItems.add(new SalesItem("300651148","GG1045 - 53BLACK - 0ACZ",73.99, 7.3));
+        salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",32900.99, 3290.0));
+        salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",12.99,0));
+
+        printReceipt(context, "TCP:10.1.1.107", "", salesItems);
         //this.alert(args.getString(0), args.getString(1), args.getString(2), callbackContext);
          return true;
     }
@@ -53,9 +62,7 @@ public class StarPrinter extends CordovaPlugin {
      * @param portSettings - Should be blank
      */
     public void openCashDrawer(final Context context, final String portName, final String portSettings) {
-        final CordovaInterface cordova = this.cordova;
-
-        Runnable runnable = new Runnable() {
+        cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> commands = new ArrayList<Byte>();
                 byte openCashDrawer = 0x07;
@@ -64,14 +71,11 @@ public class StarPrinter extends CordovaPlugin {
 
                 sendCommand(context, portName, portSettings, commands);
             }
-        };
-        this.cordova.getActivity().runOnUiThread(runnable);
+        });
     }
 
-    private void printReceipt(final Context context, final String portName, final String portSettings) {
-        final CordovaInterface cordova = this.cordova;
-
-        Runnable runnable = new Runnable() {
+    private void printReceipt(final Context context, final String portName, final String portSettings, final List<SalesItem> salesItems) {
+        cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> list = new ArrayList<Byte>();
                 Byte[] tempList;
@@ -92,37 +96,56 @@ public class StarPrinter extends CordovaPlugin {
                 String dateStr = dateFormat.format(date);
                 String timeStr = timeFormat.format(date);
 
-                String textToPrint = ("                       Designer Eyes\r\n" +
-                        "                             708 Lincoln Road\r\n" +
-                        "                           Miami Beach, FL 33139\r\n\r\n" +
+                String textToPrint = "                          Designer Eyes\r\n" +
+                        "                          708 Lincoln Road\r\n" +
+                        "                        Miami Beach, FL 33139\r\n\r\n" +
                         "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
-                        "-----------------------------------------------------------------------\r");
+                        "-----------------------------------------------------------------------\r";
                 command = createRasterCommand(textToPrint, printableArea, 13, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = ("SALE");
+                textToPrint = "SALE";
                 command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = ("SKU \t\t\t                 Description \t\t                Total\r\n" +
-                        "300678566 \t\t\t      DEVIATION - POLBKIRI - 4061-13		\t\t    10.99\n" +
-                        "300692003 \t\t\t      TWENTYSIX.2 - BLUBKIRI - 9177-16		\t\t    29.99\n" +
-                        "300651148 \t\t\t      GG1045 - 53BLACK - 0ACZ 		\t\t       29.99\n" +
-                        "300642980 \t\t\t      YARDDOG II - 55POLFLI - 355		\t       49.99\n" +
-                        "300638471 \t\t\t      EA2004 - GUNMT - 302487		\t\t       35.99\n\n" +
-                        "Subtotal\t\t\t\t                                              156.95\r\n" +
-                        "Tax		\t\t\t\t                                                     0.00\r\n" +
-                        "-----------------------------------------------------------------------\r\n" +
-                        "Total   \t                                                   $156.95\r\n" +
-                        "-----------------------------------------------------------------------\r\n\r\n" +
-                        "Charge\r\n159.95\r\n" +
-                        "Visa XXXX-XXXX-XXXX-0123\r\n");
 
-                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                textToPrint = "SKU \t\t\t                 Description \t\t                Total\r\n";
+
+                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
+
+                StringBuilder sb = new StringBuilder();
+                double subTotal = 0;
+                double tax = 0;
+                for (SalesItem salesItem : salesItems) {
+                    sb.append(salesItem.getSku()).append("\t\t\t").append(salesItem.getDescription()).append("\t\t").append(salesItem.getPrice()).append("\n");
+                    subTotal += salesItem.getPrice();
+                    tax += salesItem.getTax();
+                }
+                sb.append("\n");
+                double total = subTotal + tax;
+
+                command = createRasterCommand(textToPrint, printableArea, 12, 0);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
+
+                textToPrint =
+                        "Subtotal\t\t\t\t                                            "+subTotal+"\r\n" +
+                        "Tax		\t\t\t\t                                             "+tax+"\r\n" +
+                        "-----------------------------------------------------------------------\r\n" +
+                        "Total   \t                                                   $"+total+"\r\n" +
+                        "-----------------------------------------------------------------------\r\n\r\n" +
+                        "Charge\r\n"+total+"\r\n" +
+                        "Visa XXXX-XXXX-XXXX-0123\r\n";
+
+                command = createRasterCommand(textToPrint, printableArea, 12, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
@@ -133,8 +156,7 @@ public class StarPrinter extends CordovaPlugin {
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = ("Within 30 days with receipt\r\n" +
-                        "And tags attached");
+                textToPrint = ("Within 30 days with receipt\r\n" + "And tags attached");
                 command = createRasterCommand(textToPrint, printableArea, 13, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
@@ -148,8 +170,7 @@ public class StarPrinter extends CordovaPlugin {
 
                 sendCommand(context, portName, portSettings, list);
             }
-        };
-        this.cordova.getActivity().runOnUiThread(runnable);
+        });
     }
 
     private static byte[] createRasterCommand(String printText, int printableArea, int textSize, int bold) {
@@ -190,6 +211,51 @@ public class StarPrinter extends CordovaPlugin {
         return command;
     }
 
+    private class SalesItem {
+        private String sku;
+        private String description;
+        private double price;
+        private double tax;
+
+        SalesItem(String sku, String description, double price, double tax) {
+            this.sku = sku;
+            this.description = description;
+            this.price = price;
+            this.tax = tax;
+        }
+
+        public String getSku() {
+            return sku;
+        }
+
+        public void setSku(String sku) {
+            this.sku = sku;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+
+        public double getTax() {
+            return tax;
+        }
+
+        public void setTax(double tax) {
+            this.tax = tax;
+        }
+    }
 
     private static void sendCommand(Context context, String portName, String portSettings, ArrayList<Byte> byteList) {
         StarIOPort port = null;
