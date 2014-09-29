@@ -25,8 +25,7 @@ public class StarPrinter extends CordovaPlugin {
     	 */
         if(this.cordova.getActivity().isFinishing()) return true;
 
-        System.out.println("Action = " + action);
-
+        LOG.d("StarPrinter", "ActionName = " + action);
 
         this.alert(args.getString(0), args.getString(1), args.getString(2), callbackContext);
          return true;
