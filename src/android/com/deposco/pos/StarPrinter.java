@@ -96,6 +96,13 @@ public class StarPrinter extends CordovaPlugin {
                 String dateStr = dateFormat.format(date);
                 String timeStr = timeFormat.format(date);
 
+                Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.des_logo);
+                StarBitmap starbitmap = new StarBitmap(bm, false, 500);
+                command = starbitmap.getImageRasterDataForPrinting(true);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
+
                 String textToPrint = "                          Designer Eyes\r\n" +
                         "                          708 Lincoln Road\r\n" +
                         "                        Miami Beach, FL 33139\r\n\r\n" +
@@ -115,7 +122,7 @@ public class StarPrinter extends CordovaPlugin {
 
                 textToPrint = "SKU \t\t\t                 Description \t\t                Total\r\n";
 
-                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
+                command = createRasterCommand(textToPrint, printableArea, 13, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
@@ -139,7 +146,7 @@ public class StarPrinter extends CordovaPlugin {
 
                 textToPrint =
                         "Subtotal\t\t\t\t                                            "+subTotal+"\r\n" +
-                        "Tax	\t\t\t\t                                             "+tax+"\r\n" +
+                        "Tax	\t\t\t\t                                                "+tax+"\r\n" +
                         "-----------------------------------------------------------------------\r\n" +
                         "Total  \t\t\t\t                                              $"+total+"\r\n" +
                         "-----------------------------------------------------------------------\r\n\r\n" +
