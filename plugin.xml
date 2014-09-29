@@ -22,6 +22,7 @@
         </config-file>
         
         <source-file src="src/android/com/deposco/pos/StarPrinter.java" target-dir="src/com/deposco/pos" />
+	<source-file src="lib/StarIOPort3.1.jar" target-dir="libs" />
     </platform>
 </plugin>
 
