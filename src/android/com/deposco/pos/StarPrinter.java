@@ -39,7 +39,7 @@ public class StarPrinter extends CordovaPlugin {
 
         LOG.d("StarPrinter", "ActionName = " + action);
         Context context=this.cordova.getActivity().getApplicationContext();
-        openCashDrawer(context, "TCP:10.1.1.107", "");
+        printReceipt(context, "TCP:10.1.1.107", "");
         //this.alert(args.getString(0), args.getString(1), args.getString(2), callbackContext);
          return true;
     }
