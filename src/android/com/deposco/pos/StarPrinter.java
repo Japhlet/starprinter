@@ -124,7 +124,7 @@ public class StarPrinter extends CordovaPlugin {
                 double subTotal = 0;
                 double tax = 0;
                 for (SalesItem salesItem : salesItems) {
-                    sb.append(salesItem.getSku()).append("\t\t\t").append(salesItem.getDescription()).append("\t\t").append(salesItem.getPrice()).append("\n");
+                    sb.append(salesItem.getSku()).append("\t\t").append(salesItem.getDescription()).append("\t\t").append(salesItem.getPrice()).append("\n");
                     subTotal += salesItem.getPrice();
                     tax += salesItem.getTax();
                 }
@@ -132,16 +132,16 @@ public class StarPrinter extends CordovaPlugin {
                 double total = subTotal + tax;
 
                 textToPrint = sb.toString();
-                command = createRasterCommand(textToPrint, printableArea, 12, 0);
+                command = createRasterCommand(textToPrint, printableArea, 10, 0);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
                 textToPrint =
                         "Subtotal\t\t\t\t                                            "+subTotal+"\r\n" +
-                        "Tax		\t\t\t\t                                             "+tax+"\r\n" +
+                        "Tax	\t\t\t\t                                             "+tax+"\r\n" +
                         "-----------------------------------------------------------------------\r\n" +
-                        "Total   \t                                                   $"+total+"\r\n" +
+                        "Total  \t\t\t\t                                              $"+total+"\r\n" +
                         "-----------------------------------------------------------------------\r\n\r\n" +
                         "Charge\r\n"+total+"\r\n" +
                         "Visa XXXX-XXXX-XXXX-0123\r\n";
