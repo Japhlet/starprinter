@@ -57,7 +57,6 @@ public class StarPrinter extends CordovaPlugin {
         List<PaymentItem> paymentItems = new ArrayList<PaymentItem>();
         paymentItems.add(new PaymentItem("VISA", "XXXX-XXXXXX-1234",null,36787.71));
 
-
         String printerURL = "TCP:10.1.1.107";
         if("print".equals(action)) {
             String companyCode = args.getString(0);
@@ -301,7 +300,7 @@ public class StarPrinter extends CordovaPlugin {
                 for (PaymentItem paymentItem : paymentItems) {
                     sb.append(fillSpace(String.valueOf(paymentItem.type),10, true)[0]);
                     sb.append(fillSpace(String.valueOf(paymentItem.cardNumber),20, true)[0]);
-                    sb.append(fillSpace(String.valueOf(paymentItem.cardNumber),10, false)[0]);
+                    sb.append(fillSpace(String.valueOf(paymentItem.cardNumber), 10, false)[0]);
                     sb.append("\n");
                 }
                 textToPrint = sb.toString();
@@ -513,7 +512,10 @@ public class StarPrinter extends CordovaPlugin {
         private String confirmationCode;
 
         public PaymentItem(String type, String cardNumber, String confirmationCode, double amount) {
-
+            this.type = type;
+            this.cardNumber = cardNumber;
+            this.confirmationCode = confirmationCode;
+            this.amount = amount;
         }
         public String getType() {
             return type;

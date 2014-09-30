@@ -66,8 +66,8 @@
       <file leaf-file-name="StarPrinter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0398406" vertical-offset="3135" max-vertical-offset="9495">
-              <caret line="301" column="0" selection-start-line="301" selection-start-column="0" selection-end-line="301" selection-end-column="0" />
+            <state vertical-scroll-proportion="4.4103584" vertical-offset="1785" max-vertical-offset="9525">
+              <caret line="514" column="0" selection-start-line="514" selection-start-column="0" selection-end-line="514" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1604#1615#0" expanded="true" />
@@ -411,12 +411,12 @@
       <updated>1412004949255</updated>
       <workItem from="1412004955082" duration="79000" />
       <workItem from="1412005082698" duration="23588000" />
-      <workItem from="1412100580590" duration="913000" />
+      <workItem from="1412100580590" duration="1160000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24580000" />
+    <option name="totallyTimeSpent" value="24827000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2560" y="22" width="2560" height="1414" extended-state="0" />
@@ -502,7 +502,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -633,8 +633,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0398406" vertical-offset="3135" max-vertical-offset="9495">
-          <caret line="301" column="0" selection-start-line="301" selection-start-column="0" selection-end-line="301" selection-end-column="0" />
+        <state vertical-scroll-proportion="4.4103584" vertical-offset="1785" max-vertical-offset="9525">
+          <caret line="514" column="0" selection-start-line="514" selection-start-column="0" selection-end-line="514" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1604#1615#0" expanded="true" />
