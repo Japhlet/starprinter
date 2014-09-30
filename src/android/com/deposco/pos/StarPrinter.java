@@ -77,8 +77,6 @@ public class StarPrinter extends CordovaPlugin {
     }
 
     private void searchPrinter(final Context context, final String protocol, final CallbackContext callbackContext) {
-
-
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 List<PortInfo> tcpPortList = null;
@@ -219,7 +217,7 @@ public class StarPrinter extends CordovaPlugin {
                         "                           708 Lincoln Road\r\n" +
                                 "                       Miami Beach, FL 33139\r\n\r\n" +
                                 "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
-                                "-----------------------------------------------------------------------\r";
+                                "--------------------------------------------------------------------------\r";
                 command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
@@ -231,6 +229,15 @@ public class StarPrinter extends CordovaPlugin {
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
+                String salesperson = "Larry Johnson";
+                String customer = "Jorge Pasada";
+                textToPrint = "Sales person : " + salesperson + "n"+
+                        "Customer : " + customer+ "n"+
+                        "--------------------------------------------------------------------------\r";
+                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
+                tempList = new Byte[command.length];
+                CopyArray(command, tempList);
+                list.addAll(Arrays.asList(tempList));
 
                 textToPrint = "Item\t\t\t\t\t\t\t                            QTY\t\t\tPrice\r\n";
 
