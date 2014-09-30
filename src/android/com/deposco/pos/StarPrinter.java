@@ -3,7 +3,6 @@ package com.deposco.pos;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.*;
 import android.os.Environment;
 import android.text.Layout;
@@ -55,11 +54,15 @@ public class StarPrinter extends CordovaPlugin {
         salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",1,32900.99, 3290.00));
         salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",1,12.99,0));
 
+        List<PaymentItem> paymentItems = new ArrayList<PaymentItem>();
+        paymentItems.add(new PaymentItem("VISA", "XXXX-XXXXXX-1234",null,36787.71));
+
+
         String printerURL = "TCP:10.1.1.107";
         if("print".equals(action)) {
             String companyCode = args.getString(0);
             long orderId = args.getLong(1);
-            printReceipt(context, companyCode, printerURL, "", salesItems);
+            printReceipt(context, companyCode, printerURL, "", salesItems,paymentItems);
         }
         else if("openCashDrawer".equals(action)) {
             openCashDrawer(context, printerURL,"");
@@ -171,7 +174,7 @@ public class StarPrinter extends CordovaPlugin {
         });
     }
 
-    private void printReceipt(final Context context, final String companyCode, final String portName, final String portSettings, final List<SalesItem> salesItems) {
+    private void printReceipt(final Context context, final String companyCode, final String portName, final String portSettings, final List<SalesItem> salesItems, final List<PaymentItem> paymentItems) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> list = new ArrayList<Byte>();
@@ -231,10 +234,10 @@ public class StarPrinter extends CordovaPlugin {
 
                 String salesperson = "Larry Johnson";
                 String customer = "Jorge Pasada";
-                textToPrint = "Sales person : " + salesperson + "n"+
-                        "Customer : " + customer+ "n"+
+                textToPrint = "Sales person : " + salesperson + "\n"+
+                        "Customer : " + customer+ "\n"+
                         "--------------------------------------------------------------------------\r";
-                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
+                command = createRasterCommand(textToPrint, printableArea, 12, 0,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
@@ -276,6 +279,10 @@ public class StarPrinter extends CordovaPlugin {
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
+                double paymentTotal = 0;
+                for (PaymentItem paymentItem : paymentItems) {
+                    paymentTotal += paymentItem.amount;
+                }
 
                 sb = new StringBuilder();
 
@@ -283,7 +290,10 @@ public class StarPrinter extends CordovaPlugin {
                 sb.append("Subtotal").append(fillSpace(String.valueOf(subTotal),maxTotalSize, false)[0]).append("\n");
                 sb.append("Tax     ").append(fillSpace(String.valueOf(tax),maxTotalSize, false)[0]).append("\n");
                 sb.append("---------------------------------------");
-                sb.append("Charge  ").append(fillSpace(String.valueOf(total),maxTotalSize, false)[0]).append("\n");
+                sb.append("Total  ").append(fillSpace(String.valueOf(total),maxTotalSize, false)[0]).append("\n");
+                sb.append("Charge  ").append(fillSpace(String.valueOf(paymentTotal),maxTotalSize, false)[0]).append("\n");
+                sb.append("---------------------------------------");
+                sb.append("Change  ").append(fillSpace(String.valueOf(total - paymentTotal),maxTotalSize, false)[0]).append("\n");
                 sb.append("---------------------------------------");
                 sb.append("Charge").append("\n").append(total).append("\n");
                 sb.append("Visa XXXX-XXXX-XXXX-0123\n");
@@ -486,6 +496,47 @@ public class StarPrinter extends CordovaPlugin {
         }
     }
 
+    private class PaymentItem {
+        private String type;
+        private double amount;
+        private String cardNumber;
+        private String confirmationCode;
+
+        public PaymentItem(String type, String cardNumber, String confirmationCode, double amount) {
+
+        }
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public void setAmount(double amount) {
+            this.amount = amount;
+        }
+
+        public String getCardNumber() {
+            return cardNumber;
+        }
+
+        public void setCardNumber(String cardNumber) {
+            this.cardNumber = cardNumber;
+        }
+
+        public String getConfirmationCode() {
+            return confirmationCode;
+        }
+
+        public void setConfirmationCode(String confirmationCode) {
+            this.confirmationCode = confirmationCode;
+        }
+    }
     private static void sendCommand(Context context, String portName, String portSettings, ArrayList<Byte> byteList) {
         StarIOPort port = null;
         try {
