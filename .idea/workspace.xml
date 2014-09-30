@@ -66,7 +66,7 @@
       <file leaf-file-name="StarPrinter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.77529883" vertical-offset="1982" max-vertical-offset="9210">
+            <state vertical-scroll-proportion="1.349004" vertical-offset="1262" max-vertical-offset="9210">
               <caret line="197" column="74" selection-start-line="197" selection-start-column="74" selection-end-line="197" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -447,12 +447,12 @@
       <created>1412004949255</created>
       <updated>1412004949255</updated>
       <workItem from="1412004955082" duration="79000" />
-      <workItem from="1412005082698" duration="21575000" />
+      <workItem from="1412005082698" duration="21759000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21654000" />
+    <option name="totallyTimeSpent" value="21838000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2560" y="22" width="2560" height="1414" extended-state="6" />
@@ -657,7 +657,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/android/com/deposco/pos/StarPrinter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.77529883" vertical-offset="1982" max-vertical-offset="9210">
+        <state vertical-scroll-proportion="1.349004" vertical-offset="1262" max-vertical-offset="9210">
           <caret line="197" column="74" selection-start-line="197" selection-start-column="74" selection-end-line="197" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />

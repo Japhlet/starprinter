@@ -5,10 +5,7 @@ var starPrinter = {
             errorCallback, // error callback function
             'StarPrinter', // mapped to our native Java class called "StarPrinter"
             'print', // with this action name
-            [{                  // and this array of custom arguments to create our entry
-                companyCode,
-                orderId,
-            }]
+            [companyCode, orderId]
         ); 
      },
     openCashDrawer: function(successCallback, errorCallback) {
@@ -17,7 +14,7 @@ var starPrinter = {
             errorCallback, // error callback function
             'StarPrinter', // mapped to our native Java class called "StarPrinter"
             'openCashDrawer', // with this action name
-            [{"":""}]
+            []
         ); 
      },
     searchTCPPrinters: function(successCallback, errorCallback) {
@@ -26,7 +23,7 @@ var starPrinter = {
             errorCallback, // error callback function
             'StarPrinter', // mapped to our native Java class called "StarPrinter"
             'searchTCPPrinters', // with this action name
-            [{"":""}]
+            []
         ); 
      },
     searchBTPrinters: function(successCallback, errorCallback) {
@@ -35,7 +32,7 @@ var starPrinter = {
             errorCallback, // error callback function
             'StarPrinter', // mapped to our native Java class called "StarPrinter"
             'searchBTPrinters', // with this action name
-            [{"":""}]
+            []
         ); 
      }
 }
