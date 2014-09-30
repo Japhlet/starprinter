@@ -55,14 +55,14 @@ public class StarPrinter extends CordovaPlugin {
         salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",1,32900.99, 3290.00));
         salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",1,12.99,0));
 
-        String url = "TCP:10.1.1.107";
+        String printerURL = "TCP:10.1.1.107";
         if("print".equals(action)) {
             String companyCode = args.getString(0);
             long orderId = args.getLong(1);
-            printReceipt(context, url, "", salesItems);
+            printReceipt(context, companyCode, printerURL, "", salesItems);
         }
         else if("openCashDrawer".equals(action)) {
-            openCashDrawer(context, url,"");
+            openCashDrawer(context, printerURL,"");
         }
 /*
         else if("searchTCPPrinters".equals(action)) {
@@ -173,7 +173,7 @@ public class StarPrinter extends CordovaPlugin {
         });
     }
 
-    private void printReceipt(final Context context, final String portName, final String portSettings, final List<SalesItem> salesItems) {
+    private void printReceipt(final Context context, final String companyCode, final String portName, final String portSettings, final List<SalesItem> salesItems) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> list = new ArrayList<Byte>();
@@ -195,7 +195,7 @@ public class StarPrinter extends CordovaPlugin {
                 String dateStr = dateFormat.format(date);
                 String timeStr = timeFormat.format(date);
 
-                String imageUrl = "http://images.deposco.com/DES/pos_receipt_logo.png";
+                String imageUrl = "http://images.deposco.com/"+companyCode+"/pos_receipt_logo.png";
 
                 InputStream inputStream= null;
                 try {
