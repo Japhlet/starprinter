@@ -290,13 +290,20 @@ public class StarPrinter extends CordovaPlugin {
                 sb.append("Subtotal").append(fillSpace(String.valueOf(subTotal),maxTotalSize, false)[0]).append("\n");
                 sb.append("Tax     ").append(fillSpace(String.valueOf(tax),maxTotalSize, false)[0]).append("\n");
                 sb.append("---------------------------------------");
-                sb.append("Total  ").append(fillSpace(String.valueOf(total),maxTotalSize, false)[0]).append("\n");
+                sb.append("Total   ").append(fillSpace(String.valueOf(total),maxTotalSize, false)[0]).append("\n");
                 sb.append("Charge  ").append(fillSpace(String.valueOf(paymentTotal),maxTotalSize, false)[0]).append("\n");
                 sb.append("---------------------------------------");
                 sb.append("Change  ").append(fillSpace(String.valueOf(total - paymentTotal),maxTotalSize, false)[0]).append("\n");
                 sb.append("---------------------------------------");
-                sb.append("Charge").append("\n").append(total).append("\n");
-                sb.append("Visa XXXX-XXXX-XXXX-0123\n");
+
+                sb.append("Charge").append("\n");
+
+                for (PaymentItem paymentItem : paymentItems) {
+                    sb.append(fillSpace(String.valueOf(paymentItem.type),10, true)[0]);
+                    sb.append(fillSpace(String.valueOf(paymentItem.cardNumber),20, true)[0]);
+                    sb.append(fillSpace(String.valueOf(paymentItem.cardNumber),10, false)[0]);
+                    sb.append("\n");
+                }
                 textToPrint = sb.toString();
 
                 command = createRasterCommand(textToPrint, printableArea, 12, 0,true);
@@ -383,6 +390,9 @@ public class StarPrinter extends CordovaPlugin {
     }
 
     private static String[] fillSpace(String value, int size, boolean fromLeft) {
+        if(value == null) {
+            value="";
+        }
         if(value.length() == size) {
             return new String[] {value};
         }
