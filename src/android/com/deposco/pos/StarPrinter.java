@@ -60,8 +60,8 @@ public class StarPrinter extends CordovaPlugin {
         String printerURL = "TCP:10.1.1.107";
         if("print".equals(action)) {
             String companyCode = args.getString(0);
-            long orderId = args.getLong(1);
-            printReceipt(context, companyCode, printerURL, "", salesItems,paymentItems);
+            String orderNumber = args.getString(1);
+            printReceipt(context, companyCode, printerURL, "", orderNumber, salesItems,paymentItems);
         }
         else if("openCashDrawer".equals(action)) {
             openCashDrawer(context, printerURL,"");
@@ -173,7 +173,7 @@ public class StarPrinter extends CordovaPlugin {
         });
     }
 
-    private void printReceipt(final Context context, final String companyCode, final String portName, final String portSettings, final List<SalesItem> salesItems, final List<PaymentItem> paymentItems) {
+    private void printReceipt(final Context context, final String companyCode, final String portName, final String portSettings, final String orderNumber, final List<SalesItem> salesItems, final List<PaymentItem> paymentItems) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> list = new ArrayList<Byte>();
@@ -215,40 +215,45 @@ public class StarPrinter extends CordovaPlugin {
                     list.addAll(Arrays.asList(tempList));
                 }
 
-                String textToPrint =
-                        "                           708 Lincoln Road\r\n" +
-                                "                       Miami Beach, FL 33139\r\n\r\n" +
-                                "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
-                                "--------------------------------------------------------------------------\r";
-                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
+                String address1 = "708 Lincoln Road";
+                String city = "Miami Beach";
+                String state = "FL";
+                String zipCode = "33139";
+
+                StringBuilder sb = new StringBuilder();
+                sb.append(address1).append("\n");
+                sb.append(city).append(",").append(state).append(" ").append(zipCode).append("\n");
+                sb.append("Date : ").append(dateStr).append("                 ").append("Time : ").append(timeStr).append("\n");
+                sb.append("-----------------------------------------------------------------------------\n");
+                command = createRasterCommand(sb.toString(), printableArea, 13, 0,Layout.Alignment.ALIGN_CENTER,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = "SALE";
-                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD,false);
+                command = createRasterCommand("SALE", printableArea, 13, Typeface.BOLD,Layout.Alignment.ALIGN_NORMAL,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
                 String salesperson = "Larry Johnson";
                 String customer = "Jorge Pasada";
-                textToPrint = "Sales person : " + salesperson + "\n"+
-                        "Customer : " + customer+ "\n"+
-                        "--------------------------------------------------------------------------\r";
-                command = createRasterCommand(textToPrint, printableArea, 12, 0,false);
+
+                sb = new StringBuilder();
+                sb.append("Sales person : ").append(salesperson).append("\n");
+                sb.append("Customer     : ").append(customer).append("\n");
+                sb.append("Order Number : ").append(orderNumber).append("\n");
+                sb.append("--------------------------------------------------------------------------\n");
+                command = createRasterCommand(sb.toString(), printableArea, 12, 0,Layout.Alignment.ALIGN_NORMAL,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = "Item\t\t\t\t\t\t\t                            QTY\t\t\tPrice\r\n";
-
-                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
+                command = createRasterCommand("Item\t\t\t\t\t\t\t                            QTY\t\t\tPrice\r\n", printableArea, 13, 0,Layout.Alignment.ALIGN_NORMAL,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                StringBuilder sb = new StringBuilder();
+                sb = new StringBuilder();
                 double subTotal = 0.0d;
                 double tax = 0;
 
@@ -272,8 +277,7 @@ public class StarPrinter extends CordovaPlugin {
                 subTotal = Math.round( subTotal * 100.0 ) / 100.0;
                 double total = subTotal + tax;
 
-                textToPrint = sb.toString();
-                command = createRasterCommand(textToPrint, printableArea, 10, 0,true);
+                command = createRasterCommand(sb.toString(), printableArea, 10, 0,Layout.Alignment.ALIGN_NORMAL,true);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
@@ -298,26 +302,23 @@ public class StarPrinter extends CordovaPlugin {
                 sb.append("Charge").append("\n");
 
                 for (PaymentItem paymentItem : paymentItems) {
-                    sb.append(fillSpace(String.valueOf(paymentItem.type),10, true)[0]);
+                    sb.append(fillSpace(String.valueOf(paymentItem.type),8, true)[0]);
                     sb.append(fillSpace(String.valueOf(paymentItem.cardNumber),20, true)[0]);
-                    sb.append(fillSpace(String.valueOf(paymentItem.cardNumber), 10, false)[0]);
+                    sb.append(fillSpace(String.valueOf(paymentItem.amount), 10, false)[0]);
                     sb.append("\n");
                 }
-                textToPrint = sb.toString();
 
-                command = createRasterCommand(textToPrint, printableArea, 12, 0,true);
+                command = createRasterCommand(sb.toString(), printableArea, 12, 0,Layout.Alignment.ALIGN_NORMAL,true);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = ("Refunds and Exchanges");
-                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD,false);
+                command = createRasterCommand("Refunds and Exchanges", printableArea, 13, Typeface.BOLD,Layout.Alignment.ALIGN_NORMAL,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint = ("Within 30 days with receipt\r\n" + "And tags attached");
-                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
+                command = createRasterCommand("Within 30 days with receipt\r\n" + "And tags attached", printableArea, 13, 0,Layout.Alignment.ALIGN_NORMAL,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
@@ -408,7 +409,7 @@ public class StarPrinter extends CordovaPlugin {
         }
     }
 
-    private static byte[] createRasterCommand(String printText, int printableArea, int textSize, int bold, boolean isMonoSpaced) {
+    private static byte[] createRasterCommand(String printText, int printableArea, int textSize, int bold, Layout.Alignment alignment, boolean isMonoSpaced) {
         byte[] command;
 
         Paint paint = new Paint();
@@ -432,7 +433,7 @@ public class StarPrinter extends CordovaPlugin {
 
         TextPaint textpaint = new TextPaint(paint);
         textpaint.setLinearText(true);
-        android.text.StaticLayout staticLayout =  new StaticLayout(printText, textpaint, printableArea, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
+        android.text.StaticLayout staticLayout =  new StaticLayout(printText, textpaint, printableArea, alignment, 1, 0, false);
         int height = staticLayout.getHeight();
 
         Bitmap bitmap = Bitmap.createBitmap(staticLayout.getWidth(), height, Bitmap.Config.RGB_565);
