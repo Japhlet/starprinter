@@ -214,7 +214,7 @@ public class StarPrinter extends CordovaPlugin {
                 list.addAll(Arrays.asList(tempList));
 
 
-                textToPrint = "Item\t\t\t\t\t\t\t                            QTY\t\tTotal\r\n";
+                textToPrint = "Item\t\t\t\t\t\t\t                            QTY\t\t\tPrice\r\n";
 
                 command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
                 tempList = new Byte[command.length];
