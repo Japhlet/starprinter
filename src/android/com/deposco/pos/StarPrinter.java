@@ -46,11 +46,11 @@ public class StarPrinter extends CordovaPlugin {
 
         List<SalesItem> salesItems = new ArrayList<SalesItem>();
 
-        salesItems.add(new SalesItem("300678566","DEVIATION - POLBKIRI - 4061-13",123.99, 12.3));
-        salesItems.add(new SalesItem("300692003","TWENTYSIX.2 - BLUBKIRI - 9177-16",219.99, 21.9));
-        salesItems.add(new SalesItem("300651148","GG1045 - 53BLACK - 0ACZ",73.99, 7.3));
-        salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",32900.99, 3290.0));
-        salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",12.99,0));
+        salesItems.add(new SalesItem("300678566","DEVIATION - POLBKIRI - 4061-1234567890ABCDEFG",2,123.99, 12.39));
+        salesItems.add(new SalesItem("300692003","TWENTYSIX.2 - BLUBKIRI - 9177-16",1,219.99, 21.99));
+        salesItems.add(new SalesItem("300651148","GG1045 - 53BLACK - 0ACZ",1,73.99, 7.39));
+        salesItems.add(new SalesItem("300642980","YARDDOG II - 55POLFLI - 355",1,32900.99, 3290.00));
+        salesItems.add(new SalesItem("300638471","EA2004 - GUNMT - 302487",1,12.99,0));
 
         String url = "TCP:10.1.1.107";
         if("print".equals(action)) {
@@ -202,64 +202,81 @@ public class StarPrinter extends CordovaPlugin {
                                 "                       Miami Beach, FL 33139\r\n\r\n" +
                                 "Date: " + dateStr +"                 Time:"+timeStr+"\r\n" +
                                 "-----------------------------------------------------------------------\r";
-                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
                 textToPrint = "SALE";
-                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
+                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
 
-                textToPrint = "SKU \t\t                 Description \t\t                Total\r\n";
+                textToPrint = "Item\t\t\t\t\t\t\t                            QTY\t\tTotal\r\n";
 
-                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
                 StringBuilder sb = new StringBuilder();
-                double subTotal = 0;
+                double subTotal = 0.0d;
                 double tax = 0;
+
+                int maxDescriptionSize = 28;
+                int maxQtySize =3;
+                int maxPriceSize = 10;
                 for (SalesItem salesItem : salesItems) {
-                    sb.append(salesItem.getSku()).append("\t\t").append(salesItem.getDescription()).append("\t\t").append(salesItem.getPrice()).append("\n");
-                    subTotal += salesItem.getPrice();
+                    String [] description = fillSpace(salesItem.getDescription(), maxDescriptionSize, true);
+                    double itemTotal = salesItem.getPrice() * ((double)salesItem.getQty());
+
+                    String [] qty = fillSpace(String.valueOf(salesItem.getQty()), maxQtySize, false);
+                    String [] totalStr = fillSpace(String.valueOf(itemTotal), maxPriceSize, false);
+                    sb.append(description[0]).append("  ").append(qty[0]).append("  ").append(totalStr[0]).append("\n");
+                    if(description.length > 1) {
+                        sb.append(description[1]).append("\n");
+                    }
+                    subTotal += itemTotal;
                     tax += salesItem.getTax();
                 }
                 sb.append("\n");
+                subTotal = Math.round( subTotal * 100.0 ) / 100.0;
                 double total = subTotal + tax;
 
                 textToPrint = sb.toString();
-                command = createRasterCommand(textToPrint, printableArea, 10, 0);
+                command = createRasterCommand(textToPrint, printableArea, 10, 0,true);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
-                textToPrint =
-                        "Subtotal\t\t\t\t                                            "+subTotal+"\r\n" +
-                                "Tax	\t\t\t\t                                                "+tax+"\r\n" +
-                                "-----------------------------------------------------------------------\r\n" +
-                                "Total  \t\t\t\t                                              $"+total+"\r\n" +
-                                "-----------------------------------------------------------------------\r\n\r\n" +
-                                "Charge\r\n"+total+"\r\n" +
-                                "Visa XXXX-XXXX-XXXX-0123\r\n";
 
-                command = createRasterCommand(textToPrint, printableArea, 12, 0);
+                sb = new StringBuilder();
+
+                int maxTotalSize = 30;
+                sb.append("Subtotal").append(fillSpace(String.valueOf(subTotal),maxTotalSize, false)[0]).append("\n");
+                sb.append("Tax     ").append(fillSpace(String.valueOf(tax),maxTotalSize, false)[0]).append("\n");
+                sb.append("---------------------------------------");
+                sb.append("Charge  ").append(fillSpace(String.valueOf(total),maxTotalSize, false)[0]).append("\n");
+                sb.append("---------------------------------------");
+                sb.append("Charge").append("\n").append(total).append("\n");
+                sb.append("Visa XXXX-XXXX-XXXX-0123\n");
+                textToPrint = sb.toString();
+
+                command = createRasterCommand(textToPrint, printableArea, 12, 0,true);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
                 textToPrint = ("Refunds and Exchanges");
-                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD);
+                command = createRasterCommand(textToPrint, printableArea, 13, Typeface.BOLD,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
 
                 textToPrint = ("Within 30 days with receipt\r\n" + "And tags attached");
-                command = createRasterCommand(textToPrint, printableArea, 13, 0);
+                command = createRasterCommand(textToPrint, printableArea, 13, 0,false);
                 tempList = new Byte[command.length];
                 CopyArray(command, tempList);
                 list.addAll(Arrays.asList(tempList));
@@ -275,7 +292,24 @@ public class StarPrinter extends CordovaPlugin {
         });
     }
 
-    private static byte[] createRasterCommand(String printText, int printableArea, int textSize, int bold) {
+    private static String[] fillSpace(String value, int size, boolean fromLeft) {
+        if(value.length() == size) {
+            return new String[] {value};
+        }
+        else if(value.length() > size){
+            return new String[] {value.substring(0,size), value.substring(size)};
+        }
+        else {
+            String space=" ";
+            String spaces = "";
+            for(int i=0; i< size - value.length();i++) {
+                spaces += space;
+            }
+            return fromLeft ? new String[] {value+spaces} : new String[] {spaces+value};
+        }
+    }
+
+    private static byte[] createRasterCommand(String printText, int printableArea, int textSize, int bold, boolean isMonoSpaced) {
         byte[] command;
 
         Paint paint = new Paint();
@@ -285,8 +319,9 @@ public class StarPrinter extends CordovaPlugin {
 
         Typeface typeface;
 
+        Typeface defaultTypeFace = isMonoSpaced ? Typeface.MONOSPACE: Typeface.SANS_SERIF;
         try {
-            typeface = Typeface.create(Typeface.SERIF, bold);
+            typeface = Typeface.create(defaultTypeFace, bold);
         }
         catch (Exception e) {
             typeface = Typeface.create(Typeface.DEFAULT, bold);
@@ -316,15 +351,18 @@ public class StarPrinter extends CordovaPlugin {
 
     private class SalesItem {
         private String sku;
+        private int qty;
         private String description;
         private double price;
         private double tax;
 
-        SalesItem(String sku, String description, double price, double tax) {
+        SalesItem(String sku, String description, int qty, double price, double tax) {
             this.sku = sku;
             this.description = description;
+            this.qty = qty;
             this.price = price;
             this.tax = tax;
+
         }
 
         public String getSku() {
@@ -357,6 +395,14 @@ public class StarPrinter extends CordovaPlugin {
 
         public void setTax(double tax) {
             this.tax = tax;
+        }
+
+        public int getQty() {
+            return qty;
+        }
+
+        public void setQty(int qty) {
+            this.qty = qty;
         }
     }
 
