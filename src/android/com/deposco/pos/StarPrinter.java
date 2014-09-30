@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.*;
+import android.os.Environment;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -17,6 +18,8 @@ import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.*;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +57,9 @@ public class StarPrinter extends CordovaPlugin {
 
         String url = "TCP:10.1.1.107";
         if("print".equals(action)) {
-            printReceipt(context, cordova.getActivity().getResources(), url, "", salesItems);
+            String companyCode = args.getString(0);
+            long orderId = args.getLong(1);
+            printReceipt(context, url, "", salesItems);
         }
         else if("openCashDrawer".equals(action)) {
             openCashDrawer(context, url,"");
@@ -168,13 +173,13 @@ public class StarPrinter extends CordovaPlugin {
         });
     }
 
-    private void printReceipt(final Context context, final Resources res,final String portName, final String portSettings, final List<SalesItem> salesItems) {
+    private void printReceipt(final Context context, final String portName, final String portSettings, final List<SalesItem> salesItems) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 ArrayList<Byte> list = new ArrayList<Byte>();
                 Byte[] tempList;
 
-                int printableArea = 576;    // Printable area in paper is 832(dot)
+                int printableArea = 576;
 
                 RasterDocument rasterDoc = new RasterDocument(RasterDocument.RasSpeed.Medium, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasPageEndMode.FeedAndFullCut, RasterDocument.RasTopMargin.Standard, 0, 0, 0);
                 byte[] command = rasterDoc.BeginDocumentCommandData();
@@ -190,12 +195,25 @@ public class StarPrinter extends CordovaPlugin {
                 String dateStr = dateFormat.format(date);
                 String timeStr = timeFormat.format(date);
 
-                Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.des_logo);
-                StarBitmap starbitmap = new StarBitmap(bm, true, 576);
-                command = starbitmap.getImageRasterDataForPrinting(false);
-                tempList = new Byte[command.length];
-                CopyArray(command, tempList);
-                list.addAll(Arrays.asList(tempList));
+                String imageUrl = "http://images.deposco.com/DES/pos_receipt_logo.png";
+
+                InputStream inputStream= null;
+                try {
+        /*
+                        Bitmap bm = BitmapFactory.decodeResource(res, R.drawable.des_logo);
+        */
+                    inputStream = (InputStream) new URL(imageUrl).getContent();
+                } catch (IOException e) {
+                    LOG.e(TAG,"Can't open the receipt logo image file", e);
+                }
+                if(inputStream != null) {
+                    Bitmap bm = BitmapFactory.decodeStream(inputStream);
+                    StarBitmap starbitmap = new StarBitmap(bm, true, 576);
+                    command = starbitmap.getImageRasterDataForPrinting(false);
+                    tempList = new Byte[command.length];
+                    CopyArray(command, tempList);
+                    list.addAll(Arrays.asList(tempList));
+                }
 
                 String textToPrint =
                         "                           708 Lincoln Road\r\n" +
@@ -290,6 +308,61 @@ public class StarPrinter extends CordovaPlugin {
                 sendCommand(context, portName, portSettings, list);
             }
         });
+    }
+
+    public Bitmap setImageFromByteArray(byte[] byImage) {
+        ByteArrayInputStream in = new ByteArrayInputStream(byImage);
+        return BitmapFactory.decodeStream(in);
+    }
+
+    public byte[] getByteArrayFromImage(Bitmap image) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 90, out);
+        return out.toByteArray();
+    }
+
+    private void storeImage(Context context, Bitmap image) {
+        File pictureFile = getOutputMediaFile(context);
+        if (pictureFile == null) {
+            LOG.d(TAG,
+                    "Error creating media file, check storage permissions: ");// e.getMessage());
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            LOG.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            LOG.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+    }
+
+    /** Create a File for saving an image or video */
+    private  File getOutputMediaFile(Context context){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+                + "/Android/data/"
+                + context.getPackageName()
+                + "/Files");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        File mediaFile;
+        String mImageName="MI_"+ timeStamp +".jpg";
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+        return mediaFile;
     }
 
     private static String[] fillSpace(String value, int size, boolean fromLeft) {
