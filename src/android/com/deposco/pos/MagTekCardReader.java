@@ -282,7 +282,8 @@ public class MagTekCardReader extends CordovaPlugin {
         else if(action.equals("listenForEvents")) {
             pr = new PluginResult(PluginResult.Status.NO_RESULT);
             pr.setKeepCallback(true);
-
+            long event = MagTekSCRA.DEVICE_EVENT_DATA_START;
+            mMTSCRA.listenForEvents(event);
             mEventListenerCb = callbackContext;
         }
         else if(action.equals("getCardName")) {

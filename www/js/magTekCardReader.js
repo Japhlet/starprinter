@@ -1,4 +1,4 @@
-var magTekCardReader = {
+cordova.define("com.deposco.pos.MagTekCardReader", function(require, exports, module) { var magTekCardReader = {
     isDeviceConnected: function(successCallback, errorCallback) {
         cordova.exec(
             successCallback, // success callback function
@@ -152,13 +152,13 @@ var magTekCardReader = {
             [protocol]
         );
     },
-    listenForEvents: function(cardData, successCallback, errorCallback) {
+    listenForEvents: function(events, successCallback, errorCallback) {
         cordova.exec(
             successCallback, // success callback function
             errorCallback, // error callback function
             'MagTekCardReader', // mapped to our native Java class called "MagTekCardReader"
             'listenForEvents', // with this action name
-            [cardData]
+            events
         );
     },
     getCardName: function(successCallback, errorCallback) {
@@ -216,4 +216,6 @@ var magTekCardReader = {
         );
     }
 };
-module.exports = magTekCardReader;
+    module.exports = magTekCardReader;
+
+});
