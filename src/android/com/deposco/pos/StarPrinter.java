@@ -222,7 +222,7 @@ public class StarPrinter extends CordovaPlugin {
 
                 StringBuilder sb = new StringBuilder();
                 sb.append(address1).append("\n");
-                sb.append(city).append(",").append(state).append(" ").append(zipCode).append("\n");
+                sb.append(city).append(",").append(state).append(" ").append(zipCode).append("\n\n");
                 sb.append("Date : ").append(dateStr).append("                 ").append("Time : ").append(timeStr).append("\n");
                 sb.append("-----------------------------------------------------------------------------\n");
                 command = createRasterCommand(sb.toString(), printableArea, 13, 0,Layout.Alignment.ALIGN_CENTER,false);

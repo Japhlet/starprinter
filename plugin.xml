@@ -14,17 +14,30 @@
         <clobbers target="window.starPrinter" />
     </js-module>
 
-    <platform name="android">    
+    <js-module src="www/js/magTekCardReader.js" name="MagTekCardReader">
+        <clobbers target="window.magTekCardReader" />
+    </js-module>
+
+    <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="StarPrinter">
                 <param name="android-package" value="com.deposco.pos.StarPrinter" />
             </feature>
         </config-file>
-        
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="MagTekCardReader">
+                <param name="android-package" value="com.deposco.pos.MagTekCardReader" />
+            </feature>
+        </config-file>
+
         <source-file src="src/android/com/deposco/pos/StarPrinter.java" target-dir="src/com/deposco/pos" />
+        <source-file src="src/android/com/deposco/pos/MagTekCardReader.java" target-dir="src/com/deposco/pos" />
         <source-file src="src/android/com/deposco/pos/StarBitmap.java" target-dir="src/com/deposco/pos" />
         <source-file src="src/android/com/deposco/pos/RasterDocument.java" target-dir="src/com/deposco/pos" />
 	<source-file src="lib/StarIOPort3.1.jar" target-dir="libs" />
+	<source-file src="lib/magtek-scra.jar" target-dir="libs" />
+	<source-file src="lib/ksoap2-android-assembly-2.6.5-jar-with-dependencies.jar" target-dir="libs" />
+
     </platform>
 </plugin>
 
