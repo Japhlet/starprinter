@@ -10,7 +10,7 @@
 
 @interface StarPrinter : CDVPlugin {}
 
-+ (void)openCashDrawerWithPortname:(CDVInvokedUrlCommand*)command;
++ (void)openCashDrawer:(CDVInvokedUrlCommand*)command;
 
 + (void)sendCommand:(NSData *)commandsToPrint
                     portName:(NSString *)portName

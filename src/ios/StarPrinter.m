@@ -105,7 +105,7 @@
     }
 }
 
-+ (void)openCashDrawerWithPortname: (CDVInvokedUrlCommand*)command
++ (void)openCashDrawer: (CDVInvokedUrlCommand*)command
 {
     id level = [command.arguments objectAtIndex:0];
     id message = [command.arguments objectAtIndex:1];
