@@ -18,6 +18,23 @@
         <clobbers target="window.magTekCardReader" />
     </js-module>
 
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="StarPrinter">
+                <param name="ios-package" value="StarPrinter" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/StarPrinter.h" />
+        <source-file src="src/ios/StarPrinter.m" />
+        <header-file src="src/ios/StarBitmap.h" />
+        <source-file src="src/ios/StarBitmap.m" />
+        <header-file src="src/ios/RasterDocument.h" />
+        <source-file src="src/ios/RasterDocument.m" />
+
+        <framework src="src/ios/lib/StarIO.framework" custom="true" />
+    </platform>
+
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="StarPrinter">
@@ -34,10 +51,9 @@
         <source-file src="src/android/com/deposco/pos/MagTekCardReader.java" target-dir="src/com/deposco/pos" />
         <source-file src="src/android/com/deposco/pos/StarBitmap.java" target-dir="src/com/deposco/pos" />
         <source-file src="src/android/com/deposco/pos/RasterDocument.java" target-dir="src/com/deposco/pos" />
-	<source-file src="lib/StarIOPort3.1.jar" target-dir="libs" />
-	<source-file src="lib/magtek-scra.jar" target-dir="libs" />
-	<source-file src="lib/ksoap2-android-assembly-2.6.5-jar-with-dependencies.jar" target-dir="libs" />
-
+    	<source-file src="lib/StarIOPort3.1.jar" target-dir="libs" />
+    	<source-file src="lib/magtek-scra.jar" target-dir="libs" />
+    	<source-file src="lib/ksoap2-android-assembly-2.6.5-jar-with-dependencies.jar" target-dir="libs" />
     </platform>
 </plugin>
 
