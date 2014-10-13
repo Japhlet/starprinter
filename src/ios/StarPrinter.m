@@ -15,7 +15,7 @@
 #include <unistd.h>
 
 @implementation StarPrinter
-+ (void)sendCommand:(NSData *)commandsToPrint portName:(NSString *)portName portSettings:(NSString *)portSettings timeoutMillis:(u_int32_t)timeoutMillis
+- (void)sendCommand:(NSData *)commandsToPrint portName:(NSString *)portName portSettings:(NSString *)portSettings timeoutMillis:(u_int32_t)timeoutMillis
 {
     int commandSize = (int)[commandsToPrint length];
     unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
@@ -105,7 +105,7 @@
     }
 }
 
-+ (void)openCashDrawer: (CDVInvokedUrlCommand*)command
+- (void)openCashDrawer: (CDVInvokedUrlCommand*)command
 {
     id level = [command.arguments objectAtIndex:0];
     id message = [command.arguments objectAtIndex:1];
@@ -125,5 +125,10 @@
     
     NSData *commands = [NSData dataWithBytes:&opencashdrawer_command length:1];
     [self sendCommand:commands portName:portName portSettings:portSettings timeoutMillis:10000];
+}
+
+- (void)logMessage: (CDVInvokedUrlCommand*)command
+{
+    NSLog(@"Test log message");
 }
 @end

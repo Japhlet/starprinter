@@ -10,9 +10,11 @@
 
 @interface StarPrinter : CDVPlugin {}
 
-+ (void)openCashDrawer:(CDVInvokedUrlCommand*)command;
+- (void)openCashDrawer:(CDVInvokedUrlCommand*)command;
 
-+ (void)sendCommand:(NSData *)commandsToPrint
+- (void)logMessage:(CDVInvokedUrlCommand*)command;
+
+- (void)sendCommand:(NSData *)commandsToPrint
                     portName:(NSString *)portName
                     portSettings:(NSString *)portSettings
                     timeoutMillis:(u_int32_t)timeoutMillis;

@@ -17,6 +17,15 @@ var starPrinter = {
             []
         ); 
      },
+    logMessage: function(successCallback, errorCallback) {
+        cordova.exec(
+            successCallback, // success callback function
+            errorCallback, // error callback function
+            'StarPrinter', // mapped to our native Java class called "StarPrinter"
+            'logMessage', // with this action name
+            []
+        ); 
+     },
     searchTCPPrinters: function(successCallback, errorCallback) {
         cordova.exec(
             successCallback, // success callback function
@@ -35,5 +44,6 @@ var starPrinter = {
             []
         ); 
      }
+
 }
 module.exports = starPrinter;
